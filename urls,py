@@ -1,0 +1,21 @@
+from django.urls import path
+from .views import (
+    DonorListView, DonorDetailView, DonorCreateView,
+    BloodRequestCreateView, request_success,
+    UserLoginView, UserLogoutView, SignUpView
+)
+
+app_name = 'bloodapp'
+
+urlpatterns = [
+    path('', DonorListView.as_view(), name='donor_list'),
+    path('donor/add/', DonorCreateView.as_view(), name='donor_add'),
+    path('donor/<int:pk>/', DonorDetailView.as_view(), name='donor_detail'),
+    path('request/add/', BloodRequestCreateView.as_view(), name='request_add'),
+    path('request/success/', request_success, name='request_success'),
+
+    # auth
+    path('accounts/login/', UserLoginView.as_view(), name='login'),
+    path('accounts/logout/', UserLogoutView.as_view(), name='logout'),
+    path('accounts/signup/', SignUpView.as_view(), name='signup'),
+]
