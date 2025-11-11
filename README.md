@@ -1,21 +1,87 @@
-# bloodproj
+# Micro-project-fullstack-10
 
-Small Django project for managing blood donors and requests.
+## Project Title
+**Commmunity Blood Donor and Finder**  
+A Full Stack Django-based web application developed as part of our college micro project.
 
-Quick start (using the included virtualenv):
+---
 
-1. Activate the virtualenv (PowerShell):
-   & "bloodenv\Scripts\Activate.ps1"
+## Project Description
+This project helps manage blood donors and recipients efficiently.  
+Users can register as donors, make blood requests, and manage their profiles.  
+The system connects hospitals, blood banks, and volunteers through an easy-to-use web platform.
 
-   Or (cmd.exe):
-   "bloodenv\Scripts\activate.bat"
+Key features include:
+- Donor registration and availability tracking  
+- Blood request posting and approval  
+- Admin dashboard for data management  
+- Responsive front-end built with HTML, CSS, and Bootstrap  
+- Django backend with SQLite database integration  
 
-2. Run migrations:
-   "bloodenv\Scripts\python.exe" "bloodproj\manage.py" migrate
+---
 
-3. Run the dev server (cmd.exe):
-   "bloodenv\Scripts\python.exe" "bloodproj\manage.py" runserver
+##  Team Members
 
-Notes:
-- `phonenumber_field` is listed in `INSTALLED_APPS`.
-- Static files directory `bloodproj/static` was created to satisfy `STATICFILES_DIRS`.
+|    Name    |    USN |        Role |
+| Brunda C.K |   [4MC23IS021] |Frontened  |
+| Deeksha R S|   [4MC23IS029] | Developer |
+| Ganavi Prasad| [4MC23IS034] |  Database |
+| Geetha H  |    [4MC23IS035] | Testing   | 
+| Manya G Karle| [4MC23IS059] | Documentation| 
+
+---
+
+##  How to Set Up and Run the Project
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/deekshars16/Micro-project-fullstack-10.git
+```
+
+### 2️⃣ Navigate to the project directory
+```bash
+cd Micro-project-fullstack-10
+```
+
+### 3️⃣ Create a Virtual Environment
+```bash
+python -m venv venv
+```
+
+### 4️⃣ Activate it
+```bash
+venv\Scripts\activate
+```
+
+### 5️⃣ Install Django
+```bash
+pip install django
+```
+
+### 6️⃣ Run the Server
+```bash
+python manage.py runserver
+```
+
+### 7️⃣ Open in Browser
+Visit:
+```
+http://127.0.0.1:8000/
+```
+
+---
+
+## Technologies Used
+- **Frontend:** HTML, CSS, Bootstrap  
+- **Backend:** Python (Django Framework)  
+- **Database:** SQLite  
+- **Version Control:** GitHub  
+
+---
+
+## Submitted By
+Team Number: 10  
+College Micro Project Submission  
+GitHub Link: [https://github.com/deekshars16/Micro-project-fullstack-10](https://github.com/deekshars16/Micro-project-fullstack-10)  
+Google Form: [https://forms.gle/eAW25HRZV2HyMtHWA](https://forms.gle/eAW25HRZV2HyMtHWA)
+
