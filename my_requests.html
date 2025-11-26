@@ -1,0 +1,30 @@
+{% extends 'bloodapp/base.html' %}
+
+{% block title %}My Blood Requests{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-10">
+    <h2>My Blood Requests</h2>
+    {% if requests %}
+      <ul class="list-group">
+        {% for r in requests %}
+        <li class="list-group-item">
+          <strong>{{ r.blood_group }}</strong> ×{{ r.units }} — {{ r.city }}
+          <div class="float-end">
+            {% if r.fulfilled %}
+              <span class="badge bg-success">Fulfilled</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Open</span>
+            {% endif %}
+          </div>
+          <div class="small text-muted">Created: {{ r.created_at|date:"M d, Y H:i" }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert alert-info">You have no blood requests. <a href="{% url 'bloodapp:request_add' %}">Create one</a>.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

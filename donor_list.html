@@ -1,0 +1,61 @@
+{% extends 'bloodapp/base.html' %}
+
+{% block title %}Available Blood Donors{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Available Blood Donors</h2>
+    </div>
+    {% if user.is_authenticated %}
+    <div class="col-auto">
+        <a href="{% url 'bloodapp:donor_create' %}" class="btn btn-primary">Register as Donor</a>
+    </div>
+    {% endif %}
+</div>
+
+{% if donors %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for donor in donors %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ donor.full_name }}</h5>
+                <h6 class="card-subtitle mb-2 text-danger">Blood Group: {{ donor.blood_group }}</h6>
+                <p class="card-text">
+                    <strong>Location:</strong> {{ donor.city }}{% if donor.state %}, {{ donor.state }}{% endif %}<br>
+                    <strong>Last Donation:</strong> {{ donor.last_donation|date:"M d, Y" }}<br>
+                    {% with days_left=90|add:"-donor.days_since_donation" %}
+                    {% if donor.days_since_donation >= 90 %}
+                    <span class="badge bg-success">Eligible to Donate</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark">{{ days_left }} days until eligible</span>
+                    {% endif %}
+                    {% endwith %}
+                </p>
+            </div>
+            <div class="card-footer">
+                {% if user.is_authenticated %}
+                <a href="mailto:{{ donor.email }}" class="btn btn-sm btn-outline-primary">Email</a>
+                {% if donor.phone %}
+                <a href="tel:{{ donor.phone }}" class="btn btn-sm btn-outline-success">Call</a>
+                {% endif %}
+                {% else %}
+                <a href="{% url 'bloodapp:login' %}" class="btn btn-sm btn-outline-primary">Login to Contact</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    No donors available at the moment.
+    {% if user.is_authenticated %}
+    <a href="{% url 'bloodapp:donor_create' %}" class="alert-link">Be the first to register!</a>
+    {% else %}
+    <a href="{% url 'bloodapp:signup' %}" class="alert-link">Sign up</a> to register as a donor.
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

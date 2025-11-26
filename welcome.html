@@ -1,0 +1,90 @@
+{% extends 'bloodapp/base.html' %}
+
+{% block title %}Welcome to Blood Donor App{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-danger mb-3">Save Lives Through Blood Donation</h1>
+        <p class="lead mb-4">Connect blood donors with those in need. Every donation can save up to three lives.</p>
+        {% if user.is_authenticated %}
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'bloodapp:donor_create' %}" class="btn btn-danger btn-lg px-4 gap-3">Register as Donor</a>
+            <a href="{% url 'bloodapp:request_add' %}" class="btn btn-outline-danger btn-lg px-4">Request Blood</a>
+        </div>
+        {% else %}
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'bloodapp:signup' %}" class="btn btn-danger btn-lg px-4 gap-3">Sign Up Now</a>
+            <a href="{% url 'bloodapp:login' %}" class="btn btn-outline-danger btn-lg px-4">Login</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Stats Section -->
+    <div class="row mb-5 text-center">
+        <div class="col-md-6">
+            <div class="card border-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">Available Donors</h5>
+                    <p class="display-6">{{ donor_count }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">Active Requests</h5>
+                    <p class="display-6">{{ request_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Sections -->
+    <div class="row g-4 py-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title h4 text-danger">Why Donate Blood?</h3>
+                    <p class="card-text">
+                        • Save lives in emergencies<br>
+                        • Help cancer patients<br>
+                        • Support surgical procedures<br>
+                        • Aid accident victims<br>
+                        • Help pregnant women
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title h4 text-danger">Who Can Donate?</h3>
+                    <p class="card-text">
+                        • Age 18-65 years<br>
+                        • Weight > 50kg<br>
+                        • Good health condition<br>
+                        • No recent major surgery<br>
+                        • No current medications
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title h4 text-danger">Blood Types</h3>
+                    <p class="card-text">
+                        • A+/A- can donate to A & AB<br>
+                        • B+/B- can donate to B & AB<br>
+                        • AB+/AB- can donate to AB<br>
+                        • O+/O- are universal donors<br>
+                        • O- is especially valuable
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

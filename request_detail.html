@@ -1,0 +1,28 @@
+{% extends 'bloodapp/base.html' %}
+
+{% block title %}Blood Request Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Blood Request Details</h2>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ request.blood_group }} ×{{ request.units }}</h5>
+      <p class="card-text">
+        <strong>Requested by:</strong> {% if request.user %}{{ request.user.username }}{% else %}{{ request.requester_name }}{% endif %}<br>
+        <strong>City:</strong> {{ request.city }}<br>
+        <strong>Hospital:</strong> {{ request.hospital_name }}<br>
+        <strong>Urgent:</strong> {{ request.urgent|yesno:"Yes,No" }}<br>
+        <strong>Message:</strong> {{ request.message }}<br>
+        <strong>Created:</strong> {{ request.created_at|date:"M d, Y H:i" }}<br>
+        {% if user.is_authenticated %}
+        <strong>Phone:</strong> {{ request.phone }}<br>
+        <strong>Email:</strong> {{ request.email }}<br>
+        {% else %}
+        <strong>Contact Info:</strong> <span class="text-muted">Login to view</span><br>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

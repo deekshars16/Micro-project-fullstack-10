@@ -1,0 +1,27 @@
+{% extends 'bloodapp/base.html' %}
+
+{% block title %}My Donor Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2>My Donor Profile</h2>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ donor.full_name }}</h5>
+        <p class="card-text">
+          <strong>Blood Group:</strong> {{ donor.blood_group }}<br>
+          <strong>Location:</strong> {{ donor.city }}{% if donor.state %}, {{ donor.state }}{% endif %}<br>
+          {% if user.is_authenticated %}
+          <strong>Phone:</strong> {{ donor.phone }}<br>
+          {% else %}
+          <strong>Phone:</strong> <span class="text-muted">Login to view</span><br>
+          {% endif %}
+          <strong>Last Donation:</strong> {{ donor.last_donation|date:"M d, Y" }}<br>
+        </p>
+        <a href="{% url 'bloodapp:donor_create' %}" class="btn btn-primary">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

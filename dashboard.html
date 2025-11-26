@@ -1,0 +1,93 @@
+{% extends 'bloodapp/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h2>Welcome, {{ user.username }}</h2>
+    <p class="lead">Your activity at a glance.</p>
+
+    <h4 class="mt-4">My Donor Profile</h4>
+    {% if donor %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ donor.full_name }}</h5>
+          <p class="card-text">
+            <strong>Blood Group:</strong> {{ donor.blood_group }}<br>
+            <strong>Location:</strong> {{ donor.city }}{% if donor.state %}, {{ donor.state }}{% endif %}<br>
+            <strong>Last Donation:</strong> {{ donor.last_donation|date:"M d, Y" }}<br>
+            <strong>Available:</strong> {{ donor.available|yesno:"Yes,No" }}
+          </p>
+          <a href="{% url 'bloodapp:donor_create' %}" class="btn btn-primary">Edit Profile</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-info">You don't have a donor profile yet. <a href="{% url 'bloodapp:donor_create' %}">Create one</a>.</div>
+    {% endif %}
+      <h4 class="mt-4">All Blood Requests</h4>
+      {% if all_requests %}
+        <ul class="list-group mb-3">
+          {% for req in all_requests %}
+          <li class="list-group-item">
+            <a href="{% url 'bloodapp:request_detail' req.pk %}" class="fw-bold text-danger text-decoration-none">
+              {{ req.blood_group }} ×{{ req.units }} — {{ req.city }}
+            </a>
+            <div class="float-end">
+              {% if req.fulfilled %}
+                <span class="badge bg-success">Fulfilled</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">Open</span>
+              {% endif %}
+            </div>
+            <div class="small text-muted">
+              Requested by: 
+              {% if req.user %}
+                {{ req.user.username }}
+              {% else %}
+                {{ req.requester_name }}
+              {% endif %}
+              | Created: {{ req.created_at|date:"M d, Y H:i" }}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="alert alert-info">No blood requests found.</div>
+      {% endif %}
+
+    <h4 class="mt-4">My Recent Requests</h4>
+    {% if requests %}
+      <ul class="list-group mb-3">
+        {% for r in requests %}
+        <li class="list-group-item">
+          <strong>{{ r.blood_group }}</strong> ×{{ r.units }} — {{ r.city }}
+          <div class="float-end">
+            {% if r.fulfilled %}
+              <span class="badge bg-success">Fulfilled</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Open</span>
+            {% endif %}
+          </div>
+          <div class="small text-muted">Created: {{ r.created_at|date:"M d, Y H:i" }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'bloodapp:my_requests' %}" class="btn btn-outline-secondary">View all my requests</a>
+    {% else %}
+      <div class="alert alert-info">You have no recent requests. <a href="{% url 'bloodapp:request_add' %}">Create a request</a>.</div>
+    {% endif %}
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Quick Actions</h5>
+        <a href="{% url 'bloodapp:donor_create' %}" class="btn btn-danger mb-2 w-100">Register / Edit Donor</a>
+        <a href="{% url 'bloodapp:request_add' %}" class="btn btn-outline-danger w-100">Create Request</a>
+        <a href="{% url 'bloodapp:donor_list' %}" class="btn btn-link mt-2 w-100">Browse Donors</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

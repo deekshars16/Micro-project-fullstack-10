@@ -1,0 +1,146 @@
+{% extends 'bloodapp/base.html' %}
+{% load static %}
+
+{% block title %}Blood Donors Map{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .map-filters {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Blood Donors Map</h2>
+    <div class="map-filters">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="bloodGroup" class="form-label">Blood Group</label>
+                <select class="form-select" id="bloodGroup">
+                    <option value="">All Blood Groups</option>
+                    {% for group in blood_groups %}
+                    <option value="{{ group.0 }}">{{ group.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" placeholder="Filter by city">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">&nbsp;</label>
+                <button class="btn btn-primary w-100" onclick="filterMarkers()">Filter</button>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map;
+let markers = [];
+const donors = JSON.parse('{{ donors_json|escapejs }}');
+const requests = JSON.parse('{{ requests_json|escapejs }}');
+
+function filterMarkers() {
+    console.log('Filter button clicked');
+    const bloodGroup = document.getElementById('bloodGroup').value.toLowerCase();
+    const city = document.getElementById('city').value.toLowerCase();
+
+    markers.forEach(marker => {
+        let isVisible = true;
+        const markerBloodGroup = (marker.bloodGroup || '').toLowerCase();
+        const markerCity = (marker.city || '').toLowerCase();
+
+        if (bloodGroup && markerBloodGroup !== bloodGroup) {
+            isVisible = false;
+        }
+        if (city && !markerCity.includes(city)) {
+            isVisible = false;
+        }
+
+        if (isVisible) {
+            marker.addTo(map);
+        } else {
+            map.removeLayer(marker);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Center the map on India or first donor location
+    const defaultCenter = [20.5937, 78.9629]; // India's center
+    const firstLocation = donors.length > 0 ?
+        [parseFloat(donors[0].latitude), parseFloat(donors[0].longitude)] :
+        defaultCenter;
+
+    map = L.map('map').setView(firstLocation, 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add markers for donors
+    donors.forEach(donor => {
+        if (donor.latitude && donor.longitude) {
+            const marker = L.marker([parseFloat(donor.latitude), parseFloat(donor.longitude)], {
+                title: `${donor.full_name} (${donor.blood_group})`
+            });
+            marker.bindPopup(`
+                <div>
+                    <h6>${donor.full_name}</h6>
+                    <p>Blood Group: ${donor.blood_group}<br>
+                    City: ${donor.city}<br>
+                    Available: ${donor.available ? 'Yes' : 'No'}</p>
+                </div>
+            `);
+            marker.bloodGroup = donor.blood_group;
+            marker.city = donor.city.toLowerCase();
+            marker.type = 'donor';
+            marker.addTo(map);
+            markers.push(marker);
+        }
+    });
+
+    // Add markers for blood requests
+    requests.forEach(request => {
+        if (request.latitude && request.longitude) {
+            const marker = L.marker([parseFloat(request.latitude), parseFloat(request.longitude)], {
+                title: `Blood Request: ${request.blood_group}`
+            });
+            marker.bindPopup(`
+                <div>
+                    <h6>Blood Request</h6>
+                    <p>Blood Group: ${request.blood_group}<br>
+                    Units: ${request.units}<br>
+                    City: ${request.city}<br>
+                    Hospital: ${request.hospital_name}<br>
+                    Urgent: ${request.urgent ? 'Yes' : 'No'}</p>
+                </div>
+            `);
+            marker.bloodGroup = request.blood_group;
+            marker.city = request.city.toLowerCase();
+            marker.type = 'request';
+            marker.addTo(map);
+            markers.push(marker);
+        }
+    });
+});
+</script>
+{% endblock %}
