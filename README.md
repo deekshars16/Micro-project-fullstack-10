@@ -79,9 +79,4 @@ http://127.0.0.1:8000/
 
 ---
 
-## Submitted By
-Team Number: 10  
-College Micro Project Submission  
-GitHub Link: [https://github.com/deekshars16/Micro-project-fullstack-10](https://github.com/deekshars16/Micro-project-fullstack-10)  
-Google Form: [https://forms.gle/eAW25HRZV2HyMtHWA](https://forms.gle/eAW25HRZV2HyMtHWA)
 
