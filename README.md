@@ -1,4 +1,3 @@
-[full stack 1 (1).pdf](https://github.com/user-attachments/files/23820322/full.stack.1.1.pdf)
 # Micro-project-fullstack-10
 
 ## Project Title
@@ -81,6 +80,7 @@ http://127.0.0.1:8000/
 - 
 
 ---
+
 
 
 
