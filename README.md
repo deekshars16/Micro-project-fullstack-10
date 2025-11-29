@@ -79,9 +79,9 @@ http://127.0.0.1:8000/
 - **Version Control:** GitHub
 
 - 
-[full stack 1 (1).pdf](https://github.com/user-attachments/files/23820330/full.stack.1.1.pdf)
 
 ---
+
 
 
 
